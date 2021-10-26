@@ -1,0 +1,47 @@
+version: '3.0'
+services:
+  chromedriver:
+    image: blueimp/chromedriver
+    tmpfs: /tmp
+    environment:
+      - DISABLE_X11=false
+      - ENABLE_VNC=true
+      - EXPOSE_X11=true
+    volumes:
+      - ./assets:/home/webdriver/assets:ro
+    ports:
+      - 127.0.0.1:5900:5900
+  geckodriver:
+    image: blueimp/geckodriver
+    tmpfs: /tmp
+    shm_size: 2g
+    environment:
+      - DISABLE_X11=false
+      - ENABLE_VNC=true
+      - EXPOSE_X11=true
+    volumes:
+      - ./assets:/home/webdriver/assets:ro
+    ports:
+      - 127.0.0.1:5901:5900
+  wdio:
+    image: blueimp/wdio
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /home/wdio/.android
+    environment:
+      - WAIT_FOR_HOSTS=chromedriver:4444 geckodriver:4444
+      - MAILHOG_HOST=mailhog
+      - WINDOWS_HOST
+      - ANDROID_SERIAL
+      - PLATFORM_VERSION
+      - DEVICE_NAME
+      - ORIENTATION
+      - MACOS_ASSETS_DIR=$PWD/assets/
+      - WINDOWS_ASSETS_DIR
+    volumes:
+      - .:/app:ro
+      - ./reports:/app/reports
+    depends_on:
+      - chromedriver
+      - geckodriver
