@@ -3,7 +3,6 @@
 /* global browser, describe, it, expect */
 /* eslint-disable new-cap */
 
-const config = require('../config')
 const Home = require('../pages/home')
 const videoUrl = "https://www.volvocars.com/images/v/-/media/project/contentplatform/data/media/campaigns/volvo_amm_hero_16x9_loop_clean.mp4";
 const carModels = [
